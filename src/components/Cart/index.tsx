@@ -23,7 +23,6 @@ export function Cart() {
     setIsCreatingCheckoutSession(true)
 
     try {
-
       const response = await axios.post('/api/checkout', {
         products: cartItems
       })
