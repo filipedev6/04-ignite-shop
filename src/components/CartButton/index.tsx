@@ -8,7 +8,11 @@ type CartButtonProps = ComponentProps<typeof CartButtonContainer> & {
 }
 
 export function CartButton({ cartQuantity, ...rest }: CartButtonProps) {
-  const carQuantityLength = cartQuantity && cartQuantity >= 1
+  let carQuantityLength;
+
+  if (cartQuantity) {
+    carQuantityLength = cartQuantity >= 1
+  }
 
   return (
     <CartButtonContainer {...rest}>
