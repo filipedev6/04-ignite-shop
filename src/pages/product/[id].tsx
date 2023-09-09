@@ -1,41 +1,20 @@
+import { IProduct } from "@/context/CartContext"
+import { useCart } from "@/hooks/useCart"
 import { stripe } from "@/lib/stripe"
 import { ImageContainer, ProductContainer, ProductDetails } from "@/styles/pages/product"
-import axios from "axios"
 import { GetStaticPaths, GetStaticProps } from "next"
 import Head from "next/head"
 import Image from "next/image"
-import { useState } from "react"
 import Stripe from "stripe"
 
 interface ProductProps {
-  product: {
-    id: string
-    name: string
-    imageUrl: string
-    price: string
-    description: string
-    defaultPriceId: string
-  }
+  product: IProduct
 }
 
 export default function Product({ product }: ProductProps) {
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
+  const { checkItemAlreadyExists, addToCart } = useCart()
 
-  async function handleBuyProduct() {
-    try {
-      setIsCreatingCheckoutSession(true)
-      const response = await axios.post('/api/checkout', {
-        priceId: product.defaultPriceId
-      })
-
-      const { checkoutUrl } = response.data
-
-      window.location.href = checkoutUrl
-    } catch (err) {
-      setIsCreatingCheckoutSession(false)
-      alert('Falha ao redirecionar ao checkout')
-    }
-  }
+  const itemAlredyInCart = checkItemAlreadyExists(product.id)
 
   return (
     <>
@@ -53,7 +32,7 @@ export default function Product({ product }: ProductProps) {
 
           <p>{product.description}</p>
 
-          <button disabled={isCreatingCheckoutSession} onClick={handleBuyProduct}>Comprar agora </button>
+          <button disabled={itemAlredyInCart} onClick={() => addToCart(product)}>{itemAlredyInCart ? 'Produto já está no carrinho!' : 'Colocar na sacola'}</button>
         </ProductDetails>
       </ProductContainer>
     </>
@@ -90,6 +69,7 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({ para
         }).format(price.unit_amount! / 100),
         description: product.description,
         defaultPriceId: price.id,
+        numberPrice: price.unit_amount! / 100
       }
     },
     revalidate: 60 * 60 * 1, // 1 hours

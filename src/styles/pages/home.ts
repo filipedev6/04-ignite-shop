@@ -8,11 +8,22 @@ export const HomeContainer = styled('main', {
   minHeight: 656
 })
 
+export const SliderContainer = styled('div', {
+  display: 'flex',
+  gap: '3rem',
+  margin: '0 auto',
+  '.embla__slide': {
+    minWidth: '43.5rem',
+  }
+})
+
 export const Product = styled('div', {
   background: 'linear-gradient(100deg, #1ea483 0%, #7465d4 100%)',
   borderRadius: 8,
   cursor: 'pointer',
   position: 'relative',
+  width: '100%',
+  minHeight: 656,
 
   display: 'flex',
   justifyContent: 'center',
@@ -41,6 +52,12 @@ export const Product = styled('div', {
     transition: 'all 0.2s ease-in-out',
 
     background: 'rgba(0, 0, 0, 0.6)',
+
+    div: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 4
+    },
 
     'strong': {
       fontSize: '$lg',

@@ -16,5 +16,9 @@ export const globalStyles = globalCss({
     fontFamily: 'Roboto',
     fontWeight: 400,
     border: 0
+  },
+
+  button: {
+    cursor: 'pointer'
   }
 })
